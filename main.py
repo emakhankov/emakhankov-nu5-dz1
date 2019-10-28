@@ -29,6 +29,6 @@ while True:
     elif choosed_item == 10:
         ba.start_account()
     elif choosed_item == 11:
-        fa.create_folder()
+        fa.change_working_folder()
     elif choosed_item == 12:
         fa.open_website()

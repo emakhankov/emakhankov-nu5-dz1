@@ -74,7 +74,7 @@ def show_autor():
 
 def change_working_folder():
 
-    folder_name = input('Введите новое имя рабочей директории')
+    folder_name = input('Введите новое имя рабочей директории: ')
     if not os.path.exists(folder_name):
         print(f'Данной директории {folder_name} не существует')
         return
