@@ -11,10 +11,21 @@ def enter_money(question, error):
         return 0.0
 
 
+
+
+def add_profitable_operation(account, sum):
+    account['total'] += sum
+
+def add_expense_operation(account, sum_purchase, name_purchase):
+    account['total'] -= sum_purchase
+    account['purchases'].append({'sum': sum_purchase, 'name': name_purchase})
+
+
+
 def add_funds(account):
 
-    account['total'] += enter_money('Введите сумму пополнения счета: ', 'Ошибка пополнения счета')
-
+    entered_sum = enter_money('Введите сумму пополнения счета: ', 'Ошибка пополнения счета')
+    add_profitable_operation(account, entered_sum)
 
 def add_purchase(account):
 
@@ -29,8 +40,7 @@ def add_purchase(account):
                 name_purchase = input('Введите название покупки: ').strip()
                 if name_purchase == '':
                     print('Название покупки не может быть пустым')
-            account['total'] -= sum_purchase
-            account['purchases'].append({'sum': sum_purchase, 'name': name_purchase})
+            add_expense_operation(account, sum_purchase, name_purchase)
 
 
 def list_purchases(account):
@@ -39,9 +49,13 @@ def list_purchases(account):
         print(f'покупка {purchase["name"]:20} на сумму {purchase["sum"]:10.2f}')
 
 
+def get_default_account():
+    return {'total': 0.0, 'purchases': []}
+
+
 def start_account():
 
-    account = {'total': 0.0, 'purchases': []}
+    account = get_default_account
 
     while True:
         print(f'У вас с счету {account["total"]: .2f}')
