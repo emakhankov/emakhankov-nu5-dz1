@@ -3,6 +3,7 @@ import shutil
 import platform
 import webbrowser
 
+FILE_LISTDIR = 'listdir.txt'
 
 def create_folder():
 
@@ -47,19 +48,44 @@ def copy_folder_or_file():
         print(f'Файл {file_name} успешно скопирован')
 
 
-def show_working_folder():
+def get_working_folder(all_or_files_or_dirs=0):
+    """
+    Возвращает содержимое рабочего каталога в виде строки с переносами
+    :return:
+    """
+    return f'\n'.join([f for f in os.listdir(os.getcwd()) if all_or_files_or_dirs == 0 or
+                       all_or_files_or_dirs == 1 and os.path.isfile(f) or all_or_files_or_dirs == 2 and
+                       os.path.isdir(f)])
 
-    print(f'\n'.join(os.listdir(os.getcwd())))
+
+def show_working_folder():
+    """
+    Выводит на экран содеримое рабочего каталога
+    :return:
+    """
+    print(get_working_folder(all_or_files_or_dirs=0))
+
+
+def save_working_folder():
+
+    with open(FILE_LISTDIR, "w", encoding='UTF-8') as f:
+        f.write(f'FILES:\n')
+        f.write(get_working_folder(all_or_files_or_dirs=1))
+        f.write(f'\n\n')
+        f.write(f'DIRS:\n')
+        f.write(get_working_folder(all_or_files_or_dirs=2))
+        f.write(f'\n')
+    print('Сохранено')
 
 
 def show_working_folder_only_folders():
 
-    print(f'\n'.join([f for f in os.listdir(os.getcwd()) if os.path.isdir(f)]))
+    print(get_working_folder(all_or_files_or_dirs=2))
 
 
 def show_working_folder_only_files():
 
-    print(f'\n'.join([f for f in os.listdir(os.getcwd()) if os.path.isfile(f)]))
+    print(get_working_folder(all_or_files_or_dirs=1))
 
 
 def show_os():

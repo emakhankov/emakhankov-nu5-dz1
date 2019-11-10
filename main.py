@@ -16,6 +16,8 @@ while True:
         fa.copy_folder_or_file()
     elif choosed_item == 4:
         fa.show_working_folder()
+    elif choosed_item == 41:
+        fa.save_working_folder()
     elif choosed_item == 5:
         fa.show_working_folder_only_folders()
     elif choosed_item == 6:

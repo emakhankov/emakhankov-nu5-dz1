@@ -59,3 +59,25 @@ def test_create_folder(monkeypatch):
     fa.create_folder()
     assert os.path.exists(test_fold_name)
     os.rmdir(test_fold_name)
+
+
+def test_get_account():
+    if os.path.exists(ba.FILE_BANK_ACCOUNT_NAME):
+        os.remove(ba.FILE_BANK_ACCOUNT_NAME)
+    assert ba.get_account() == {'total': 0.0, 'purchases': []}
+
+
+def test_save_account():
+    account = ba.get_default_account()
+    ba.add_profitable_operation(account, 100)
+    ba.save_account(account)
+    account2 = ba.get_account()
+    assert account['total'] == account2['total']
+
+
+def test_save_working_folder():
+    fa.save_working_folder()
+    assert os.path.exists(fa.FILE_LISTDIR)
+    with open(fa.FILE_LISTDIR, "r", encoding='UTF-8') as f:
+        s = f.read()
+        assert s.find('test_filemanager.py') != -1
