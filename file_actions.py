@@ -48,13 +48,14 @@ def copy_folder_or_file():
         print(f'Файл {file_name} успешно скопирован')
 
 
-def get_working_folder(all_or_files_or_dirs=0):
+def get_working_folder(all_or_files_or_dirs='all'):
     """
     Возвращает содержимое рабочего каталога в виде строки с переносами
     :return:
     """
-    return f'\n'.join([f for f in os.listdir(os.getcwd()) if all_or_files_or_dirs == 0 or
-                       all_or_files_or_dirs == 1 and os.path.isfile(f) or all_or_files_or_dirs == 2 and
+    all_or_files_or_dirs = all_or_files_or_dirs.lower()
+    return f'\n'.join([f for f in os.listdir(os.getcwd()) if all_or_files_or_dirs == 'all' or
+                       all_or_files_or_dirs == 'files' and os.path.isfile(f) or all_or_files_or_dirs == 'dirs' and
                        os.path.isdir(f)])
 
 
@@ -63,29 +64,29 @@ def show_working_folder():
     Выводит на экран содеримое рабочего каталога
     :return:
     """
-    print(get_working_folder(all_or_files_or_dirs=0))
+    print(get_working_folder(all_or_files_or_dirs='all'))
 
 
 def save_working_folder():
 
     with open(FILE_LISTDIR, "w", encoding='UTF-8') as f:
         f.write(f'FILES:\n')
-        f.write(get_working_folder(all_or_files_or_dirs=1))
+        f.write(get_working_folder(all_or_files_or_dirs='files'))
         f.write(f'\n\n')
         f.write(f'DIRS:\n')
-        f.write(get_working_folder(all_or_files_or_dirs=2))
+        f.write(get_working_folder(all_or_files_or_dirs='dirs'))
         f.write(f'\n')
     print('Сохранено')
 
 
 def show_working_folder_only_folders():
 
-    print(get_working_folder(all_or_files_or_dirs=2))
+    print(get_working_folder(all_or_files_or_dirs='dirs'))
 
 
 def show_working_folder_only_files():
 
-    print(get_working_folder(all_or_files_or_dirs=1))
+    print(get_working_folder(all_or_files_or_dirs='files'))
 
 
 def show_os():
