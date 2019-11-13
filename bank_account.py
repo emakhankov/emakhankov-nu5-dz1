@@ -1,4 +1,9 @@
+import json
+import os
 
+
+FILE_BANK_ACCOUNT_FOLD = os.path.join('./','bank_account_folder')
+FILE_BANK_ACCOUNT_NAME = os.path.join(FILE_BANK_ACCOUNT_FOLD, 'bankAccount.json')
 
 
 def enter_money(question, error):
@@ -53,9 +58,32 @@ def get_default_account():
     return {'total': 0.0, 'purchases': []}
 
 
+def get_account():
+    """
+    Получаем начальное состояние счета, зачитываем из файла json, если файл отсутствует возвращаем пустой инициализированный счет
+    :return: dict - объект банковский счет
+    """
+    if os.path.exists(FILE_BANK_ACCOUNT_NAME):
+        with open(FILE_BANK_ACCOUNT_NAME, "r", encoding='UTF-8') as f:
+            return json.load(f)
+    else:
+        return get_default_account()
+
+
+def save_account(account):
+    """
+    Сохранение состояния банковского счета при выходе из програииы
+    :param account: Банковский счет
+    :return:
+    """
+    os.makedirs(FILE_BANK_ACCOUNT_FOLD, exist_ok=True)
+    with open(FILE_BANK_ACCOUNT_NAME, "w", encoding='UTF-8') as f:
+        return json.dump(account, f, ensure_ascii=False)  # Для создания нормального русского джейсона
+
+
 def start_account():
 
-    account = get_default_account
+    account = get_account()
 
     while True:
         print(f'У вас с счету {account["total"]: .2f}')
@@ -75,6 +103,7 @@ def start_account():
             list_purchases(account)
             print()
         elif choice == '4':
+            save_account(account)
             return
         else:
             print('Неверный пункт меню')
