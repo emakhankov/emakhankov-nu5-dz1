@@ -24,7 +24,7 @@ def delete_folder_or_file():
         return False
     if os.path.isdir(file_name):
         os.rmdir(file_name)
-        print(f'Директоия {file_name} успешно удалена')
+        print(f'Директория {file_name} успешно удалена')
     elif os.path.isfile(file_name):
         os.remove(file_name)
         print(f'Файл {file_name} успешно удален')
@@ -56,7 +56,7 @@ def get_working_folder(all_or_files_or_dirs='all'):
     all_or_files_or_dirs = all_or_files_or_dirs.lower()
     return f'\n'.join([f for f in os.listdir(os.getcwd()) if all_or_files_or_dirs == 'all' or
                        all_or_files_or_dirs == 'files' and os.path.isfile(f) or all_or_files_or_dirs == 'dirs' and
-                       os.path.isdir(f)])
+                       os.path.isdir(f)]) # Вот здесь генератор списка
 
 
 def show_working_folder():
