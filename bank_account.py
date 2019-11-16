@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 
 FILE_BANK_ACCOUNT_FOLD = os.path.join('./','bank_account_folder')
@@ -9,13 +10,9 @@ FILE_BANK_ACCOUNT_NAME = os.path.join(FILE_BANK_ACCOUNT_FOLD, 'bankAccount.json'
 def enter_money(question, error):
 
     inp_str = input(question,).strip()
-    if inp_str.isnumeric():
-        return float(inp_str)
-    else:
+    if not inp_str.isnumeric():
         print(error)
-        return 0.0
-
-
+    return float(inp_str) if inp_str.isnumeric() else 0.0 # ТЕРНАРНЫЙ ОПЕРАТОР
 
 
 def add_profitable_operation(account, sum):
@@ -63,11 +60,15 @@ def get_account():
     Получаем начальное состояние счета, зачитываем из файла json, если файл отсутствует возвращаем пустой инициализированный счет
     :return: dict - объект банковский счет
     """
-    if os.path.exists(FILE_BANK_ACCOUNT_NAME):
-        with open(FILE_BANK_ACCOUNT_NAME, "r", encoding='UTF-8') as f:
-            return json.load(f)
-    else:
-        return get_default_account()
+    try:  # ОБРАБОТКА ИСКЛЮЧЕНИЙ
+        if os.path.exists(FILE_BANK_ACCOUNT_NAME):
+            with open(FILE_BANK_ACCOUNT_NAME, "r", encoding='UTF-8') as f:
+                return json.load(f)
+        else:
+            return get_default_account()
+    except:
+        print('Проблемы с чтением', sys.exc_info()[0])
+        raise
 
 
 def save_account(account):
@@ -76,9 +77,12 @@ def save_account(account):
     :param account: Банковский счет
     :return:
     """
-    os.makedirs(FILE_BANK_ACCOUNT_FOLD, exist_ok=True)
-    with open(FILE_BANK_ACCOUNT_NAME, "w", encoding='UTF-8') as f:
-        return json.dump(account, f, ensure_ascii=False)  # Для создания нормального русского джейсона
+    try: # ОБРАБОТКА ИСКЛЮЧЕНИЙ
+        os.makedirs(FILE_BANK_ACCOUNT_FOLD, exist_ok=True)
+        with open(FILE_BANK_ACCOUNT_NAME, "w", encoding='UTF-8') as f:
+            return json.dump(account, f, ensure_ascii=False)  # Для создания нормального русского джейсона
+    except:
+        print('Проблемы с записью', sys.exc_info()[0])
 
 
 def start_account():
